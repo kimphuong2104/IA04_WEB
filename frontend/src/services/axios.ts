@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosInstance, AxiosResponse } from 'axios'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -29,7 +29,7 @@ export const apiClient: AxiosInstance = axios.create({
   withCredentials: false,
 })
 
-apiClient.interceptors.request.use((config: AxiosRequestConfig) => {
+apiClient.interceptors.request.use((config: any) => {
   if (!config.headers) config.headers = {}
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`
@@ -54,7 +54,7 @@ apiClient.interceptors.response.use(
       }
 
       if (isRefreshing) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           addRefreshSubscriber((token: string) => {
             originalRequest.headers['Authorization'] = `Bearer ${token}`
             resolve(apiClient(originalRequest))
